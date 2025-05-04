@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Logo.png" type="image/x-icon" alt="DataFortress">
+    <link rel="stylesheet" href="admin_dashboard.css">
+    <title>DataFortress</title>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-left">
+            <img src="Logo.png" alt="DataFortress Logo">
+            <span class="greetAdmin">Welcome, #Admin!</span> <!-- TODO: Must reflect username-->
+        </div>
+        <ul>
+            <!-- TODO: Once logged out, user must login again -->
+            <li class="users"><a href="admin_manage.html">Users</a></li>
+            <li class="logout"><a href="index.html">Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- TODO: Real-time count of users registered, files encrypted and decrypted -->
+        <section class="dashboard-metrics">
+            <div class="metric-card">
+                <span class="metric-icon icon-users"></span>
+                <span class="metric-label"> Users</span>
+                <span class="metric-value" id="CLNT-count">#</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-icon icon-encrypted"></span>
+                <span class="metric-label"> Encrypted</span>
+                <span class="metric-value" id="encrypted-count">#</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-icon icon-decrypted"></span>
+                <span class="metric-label"> Decrypted</span>
+                <span class="metric-value" id="decrypted-count">#</span>
+            </div>
+        </section>
+
+        <section class="audit-logs">
+            <h2>Audit Logs</h2>
+            <table class="audit-table">
+                <thead>
+                    <tr>
+                        <th>Log ID</th>
+                        <th>Session ID</th>
+                        <th>User ID</th>
+                        <th>Activity</th>
+                        <th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody id="audit-log-body">
+                    <!-- Sample data for the audit logs 
+                     Must be real-time audits
+                     Optional: Set limit of display (reset after 24h etc)-->
+                    <tr>
+                        <td>LOG-001</td>
+                        <td>SESS-001</td>
+                        <td>ADMN-001</td>
+                        <td>Logged In</td>
+                        <td>04/24/25 11:00:11 AM</td>
+                    </tr>
+                    <tr>
+                        <td>LOG-002</td>
+                        <td>SESS-001</td>
+                        <td>ADMN-001</td>
+                        <td>Added a User</td>
+                        <td>04/24/25 11:20:28 AM</td>
+                    </tr>
+                    <tr>
+                        <td>LOG-003</td>
+                        <td>SESS-001</td>
+                        <td>ADMN-001</td>
+                        <td>Logged Out</td>
+                        <td>04/24/25 11:23:15 AM</td>
+                    </tr>
+                    <tr>
+                        <td>LOG-004</td>
+                        <td>SESS-002</td>
+                        <td>CLNT-016</td>
+                        <td>Logged In</td>
+                        <td>04/25/25 8:20:11 AM</td>
+                    </tr>
+                    <tr>
+                        <td>LOG-005</td>
+                        <td>SESS-002</td>
+                        <td>CLNT-016</td>
+                        <td>Decrypted a File</td>
+                        <td>04/25/25 8:26:51 AM</td>
+                    </tr>
+                    <tr>
+                        <td>LOG-006</td>
+                        <td>SESS-002</td>
+                        <td>CLNT-016</td>
+                        <td>Encrypted a File</td>
+                        <td>04/25/25 8:27:09 AM</td>
+                    </tr>
+                    <tr>
+                        <td>LOG-007</td>
+                        <td>SESS-002</td>
+                        <td>CLNT-016</td>
+                        <td>Encrypted a File</td>
+                        <td>04/25/25 8:43:27 AM</td>
+                    </tr>
+                    <tr>
+                        <td>LOG-008</td>
+                        <td>SESS-002</td>
+                        <td>CLNT-016</td>
+                        <td>Logged Out</td>
+                        <td>04/25/25 8:53:41 AM</td>
+                    </tr>
+                    <tr>
+                        <td>LOG-009</td>
+                        <td>SESS-003</td>
+                        <td>ADMN-002</td>
+                        <td>Logged In</td>
+                        <td>04/27/25 09:19:43 PM</td>
+                    </tr>
+                    <tr>
+                        <td>LOG-010</td>
+                        <td>SESS-003</td>
+                        <td>ADMN-002</td>
+                        <td>Logged Out</td>
+                        <td>05/02/25 09:23:49 PM</td>
+                    </tr>
+                    <tr>
+                        <td>LOG-011</td>
+                        <td>SESS-004</td>
+                        <td>CLNT-020</td>
+                        <td>Logged In</td>
+                        <td>05/02/25 01:35:22 PM</td>
+                    </tr>
+                    <tr>
+                        <td>LOG-012</td>
+                        <td>SESS-004</td>
+                        <td>CLNT-020</td>
+                        <td>Encrypted a File</td>
+                        <td>05/02/25 01:40:55 PM</td>
+                    </tr>
+                    <tr>
+                        <td>LOG-013</td>
+                        <td>SESS-005</td>
+                        <td>CLNT-051</td>
+                        <td>Registered</td>
+                        <td>05/02/25 01:44:31 PM</td>
+                    </tr>
+                    <tr>
+                        <td>LOG-014</td>
+                        <td>SESS-005</td>
+                        <td>CLNT-020</td>
+                        <td>Encrypted a File</td>
+                        <td>05/02/25 01:45:17 PM</td>
+                    </tr>
+                    <tr>
+                        <td>LOG-015</td>
+                        <td>SESS-005</td>
+                        <td>CLNT-020</td>
+                        <td>Logged out</td>
+                        <td>05/02/25 1:46:03 PM</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 DataFortress. All rights reserved.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Logo.png" type="image/x-icon" alt="DataFortress">
+    <link rel="stylesheet" href="encryption.css">
+    <title>DataFortress</title>
+</head>
+
+<body>
+    <nav>
+        <a href="user_landingpage.html"><img src="Logo.png" alt="DataFortress Logo"></a>
+        <ul>
+            <li class="home"><a href="user_landingpage.html">Home</a></li>
+            <li class="logout"><a href="index.html">Logout</a></li>
+        </ul>
+    </nav>
+    <br>
+
+    <div class="tabs">
+        <button class="tab-button active">Encrypt Tool</button>
+        <button class="tab-button"><a href="decryption.html">Decrypt Tool</a></button>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="file-upload">
+                <div class="file-name">No file chosen</div>
+                <label for="fileInput" class="choose-file-button">Choose File</label>
+                <input type="file" id="fileInput" style="display: none;">
+            </div>
+    
+            <div class="passkey-input">
+                <div class="copy-icon-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"/>
+                    </svg>
+                </div>
+                <input type="text" id="passkey" placeholder="Passkey" readonly>
+                <button class="create-passkey-button">Create Passkey</button>
+                <div class="info-passkey-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                    </svg>
+                    <span class="tooltip-text"><b>Please remember your passkey.</b> DataFortress puts you in control of your security and doesn't store your files or passkeys.</span>
+                </div>
+            </div>
+            <button class="encrypt-button">Encrypt</button>
+
+            <div class="download-window" id="download">
+                <div class="download-content">
+                    <button id="close-window">X</button><br>
+                    <h2>Encrypted File is Ready!</h2>
+                    <button class="download-button" id = "initiateDownload">Download</button>
+                    <span class="download-timer"></span>
+                    <span class="download-reminder">For your security, DataFortress only allows a 5-minute window to download your file. <br> Make sure to grab it before time runs out!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+            <p>&copy; 2025 DataFortress. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const fileNameDisplay = document.querySelector('.file-name');
+        const createPasskeyButton = document.querySelector('.create-passkey-button');
+        const passkeyInput = document.getElementById('passkey');
+        const copyIconContainer = document.querySelector('.copy-icon-container');
+        const encryptButton = document.querySelector('.encrypt-button');
+        const downloadWindow = document.getElementById('download');
+        const closeDownloadWindow = document.getElementById('close-window');
+        const initiateDownloadButton = document.getElementById('initiateDownload');
+        const timerDisplayElement = document.querySelector('.download-timer');
+
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files.length > 0) {
+                fileNameDisplay.textContent = this.files[0].name;
+            } else {
+                fileNameDisplay.textContent = 'No file chosen';
+            }
+        });
+
+        // TODO: Ensure passkey will be unique and applied to file; can change passkey length if needed 
+        createPasskeyButton.addEventListener('click', function() {
+            const generatedPasskey = Math.random().toString(36).substring(2, 15);
+            passkeyInput.value = generatedPasskey;
+        });
+
+        copyIconContainer.addEventListener('click', function() {
+            if (passkeyInput.value) {
+                passkeyInput.select();
+                document.execCommand('copy');
+                window.getSelection().removeAllRanges();
+                alert('Passkey copied to clipboard!');
+            } else {
+                alert('No passkey to copy.');
+            }
+        });
+
+        let timeLeft = 120;  // Reset time left to 2 minutes (120 seconds)
+        let timerInterval;
+
+        function updateTimer() {
+            timeLeft--;
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplayElement.textContent = `Time remaining: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                downloadWindow.style.display = 'none';
+                alert("Download time expired!");
+            }
+        }
+
+        encryptButton.addEventListener('click', function() {
+            const file = fileInput.files[0];
+            const passkey = passkeyInput.value;
+
+            if (!file) {
+                alert('Please choose a file to encrypt.');
+                return;
+            }
+
+            if (file.size > 10 * 1024 * 1024) {
+                alert('File size exceeds the 10 MB limit. Please choose a smaller file.');
+                return;
+            }
+
+            if (!passkey) {
+                alert('Please click the create passkey button for your passkey.');
+                return;
+            }
+
+            downloadWindow.style.display = 'flex';
+
+            timeLeft = 300;
+            updateTimer();
+            timerInterval = setInterval(updateTimer, 1000);
+
+        });
+
+        closeDownloadWindow.addEventListener('click', () => {
+            downloadWindow.style.display = 'none';
+            clearInterval(timerInterval);
+        });
+
+        initiateDownloadButton.addEventListener('click', function() {
+            const file = fileInput.files[0];
+            const passkey = passkeyInput.value;
+
+            if (file && passkey) {
+                const downloadLink = document.createElement('a');
+                downloadLink.href = URL.createObjectURL(file);
+                downloadLink.download = file.name;
+                downloadLink.click();
+                downloadWindow.style.display = 'none';
+                clearInterval(timerInterval);
+            } else {
+                alert('Please choose a file and create a passkey before downloading.');
+            }
+        });
+    </script>
+</body>
+
+</html>

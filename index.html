@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Logo.png" type="image/x-icon" alt="DataFortress">
+    <link rel="stylesheet" href="index.css">
+    <title>DataFortress</title>
+</head>
+<body>
+    <div class="container">
+        <div class="form-section" id="login-form">
+            <h2>Login</h2>
+            <label for="login-username">Username</label>
+            <input type="text" id="login-username" name="login-username" required>
+            <div class="password-container">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" name="login-password" required>
+            </div>
+            <button type="submit" id="login-button">LOGIN</button>
+            <div class="forgot-password">
+                <a href="forgot_password.html">Forgot Password?</a>
+            </div>            
+            <div class="form-footer">
+                Don't have an account? <a href="#" id="show-register">Register</a>
+            </div>
+        </div>
+
+        <div class="form-section" id="register-form">
+            <h2>Register</h2>
+            <label for="register-username">Username</label>
+            <input type="text" id="register-username" name="register-username" required>
+            <label for="register-email">Email</label>
+            <input type="email" id="register-email" name="register-email" required>
+            <label for="register-password">Password</label>
+            <input type="password" id="register-password" name="register-password" required>
+            <button type="submit" id="register-button">REGISTER</button>
+            <div class="form-footer">
+                Already have an account? <a href="#" id="show-login">Login</a>
+            </div>
+            <div class="registration-message" id="registration-activation-message">
+                Link to activate your account has been sent to your email.
+            </div>
+        </div>
+
+        <div class="welcome-section">
+            <h2>Welcome to DataFortress!</h2>
+            <div class="logo-container">
+                <span class="logo"><img src="welcomeLogo.png" alt=""></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            const showRegisterLink = document.getElementById('show-register');
+            const showLoginLink = document.getElementById('show-login');
+            const loginButton = document.getElementById('login-button');
+            const registerButton = document.getElementById('register-button');
+            const registrationActivationMessage = document.getElementById('registration-activation-message');
+
+            function toggleForms(showLogin) {
+                loginForm.classList.toggle('active-form', showLogin);
+                registerForm.classList.toggle('active-form', !showLogin);
+            }
+
+            toggleForms(true);
+
+            showRegisterLink?.addEventListener('click', (e) => {
+                e.preventDefault();
+                toggleForms(false);
+            });
+
+            showLoginLink?.addEventListener('click', (e) => {
+                e.preventDefault();
+                toggleForms(true);
+            });
+
+            // TODO: Add validation for username and password credentials
+            if (loginButton) {
+                loginButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const username = document.getElementById('login-username')?.value.trim() || '';
+                    const password = document.getElementById('login-password')?.value.trim() || '';
+
+                    if (username === '' || password === '') {
+                        alert('Please fill in both username and password.');
+                        return;
+                    }
+
+                        alert('Login successful!');
+                });
+            }
+
+            //TODO: Reset register form fields after successful registration
+            // Add validation for username, email, and password format
+            // Send registration validation to email
+            if (registerButton) {
+                registerButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const username = document.getElementById('register-username')?.value.trim() || '';
+                    const email = document.getElementById('register-email')?.value.trim() || '';
+                    const password = document.getElementById('register-password')?.value.trim() || '';
+
+                    if (username === '' || email === '' || password === '') {
+                        alert('Please fill in all the fields.');
+                        return;
+                    }
+
+                    if (registrationActivationMessage) {
+                        registrationActivationMessage.style.display = 'block';
+                    }
+
+                    setTimeout(() => {
+                        if (registerForm && loginForm) {
+                            registerForm.classList.remove('active-form');
+                            loginForm.classList.add('active-form');
+                        }
+                    }, 2500);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

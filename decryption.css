@@ -1,0 +1,302 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+body {
+    font-family: "Inter", sans-serif;
+    background-color: #EDF2F4;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+nav {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    border-bottom: 1px solid #E0E0E0;
+}
+
+nav img {
+    height: 40px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+nav ul li {
+    margin-left: 20px;
+    font-weight: bold;
+}
+
+nav ul li a {
+    color: #282A3E;
+    text-decoration: none;
+}
+
+.tabs {
+    padding: 10px;
+}
+
+.tabs .tab-button a{
+    text-decoration: none;
+    color: inherit;
+}
+
+.tab-button {
+    background-color: transparent;
+    border: none;
+    color: #333;
+    padding: 10px 20px;
+    margin: 0 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: color 0.3s ease;
+    text-decoration: none;
+}
+
+.tab-button:hover {
+    color: #282A3E;
+}
+
+.tab-button.active {
+    color: #2c3e50;
+    font-weight: bold;
+    border-bottom: 2px solid #2c3e50;
+    cursor: default;
+    text-decoration: none;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+}
+
+.main-content{
+    padding: 100px;
+    flex-direction: column;
+    gap: 20px;
+    width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}   
+
+.file-upload, .passkey-input {
+    display: flex;
+    align-items: center;
+    width: 400px;
+    position: relative;
+}
+
+.file-name {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px 0 0 4px;
+    background-color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #555;
+    min-width: 0;
+}
+
+.choose-file-button {
+    background-color: #34495e;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 113px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.choose-file-button:hover {
+    background-color: #282A3E;
+}
+
+.passkey-input {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.passkey-input input[type="password"] {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px 0 0 4px;
+    font-size: 16px;
+    color: #555;
+}
+
+.passkey-input button.enter-passkey-button {
+    background-color: #34495e;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: default;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+    width: 143px;
+}
+
+.info-passkey-container {
+    position: absolute;
+    right: -25px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #777;
+}
+
+.info-passkey-container:hover {
+    color: #282A3E;
+}
+
+.info-passkey-container .tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    text-align: justify;
+    border-radius: 6px;
+    padding: 10px;
+    position: absolute;
+    z-index: 10;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    white-space: normal;
+    word-break: break-word;
+    font-size: 12px;
+}
+
+.info-passkey-container .tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+}
+
+.info-passkey-container:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+.decrypt-button {
+    background-color: #34495e;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.decrypt-button:hover {
+    background-color: #282A3E;
+}
+
+.download-window {
+    display: none;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.download-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 25px;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.download-content h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+.download-content .download-button {
+    background-color: #34495e;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 18px;
+    width: 80%;
+    max-width: 200px;
+}
+
+.download-content .download-button:hover {
+    background-color: #282A3E;
+}
+
+.download-timer {
+    font-size: 14px;
+    color: rgb(153, 14, 14);
+}
+
+.download-reminder {
+    margin-top: 0;
+    font-size: 12px;
+    color: #777;
+    text-align: center;
+}
+
+.download-content button#close-window {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #333;
+}
+
+footer {
+    background-color: #2c3e50;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: auto;
+}

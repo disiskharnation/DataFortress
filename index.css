@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #EDF2F4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    width: 800px;
+    max-width: 90%;
+}
+
+.form-section {
+    padding: 30px;
+    width: 400px;
+    box-sizing: border-box;
+    display: none;
+    flex-direction: column;
+}
+
+.welcome-section {
+    background-color: #EDF2F4;
+    padding: 30px;
+    width: 400px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-left: 1px solid #E0E0E0;
+    border-radius: 0 8px 8px 0;
+    text-align: center;
+}
+
+.welcome-section h2 {
+    font-size: 2em;
+    color: #282A3E;
+    margin-bottom: 20px;
+}
+
+.welcome-section .logo-container {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.welcome-section .logo-container .logo img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+h2 {
+    font-size: 1.8em;
+    color: #282A3E;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #282A3E;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: calc(100% - 16px);
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1em;
+    width: 100%;
+}
+
+.password-container {
+    margin-bottom: 20px;
+}
+
+button {
+    background-color: #34495e;
+    color: white;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #282A3E;
+}
+
+.form-footer,
+.forgot-password {
+    margin-top: 20px;
+    text-align: center;
+    font-style: italic;
+    color: #777;
+    font-size: 0.9em;
+}
+
+.form-footer a {
+    color: #555;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.form-footer a:hover {
+    text-decoration: underline;
+    color: #282A3E;
+}
+
+.forgot-password a {
+    color: #777;
+    text-decoration: none;  
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+.registration-message {
+    background-color: #D1FAE5;
+    color: #16A34A;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 15px;
+    text-align: center;
+    font-size: 0.9em;
+    display: none;
+}
+
+#register-form {
+    display: none;
+}
+
+.active-form {
+    display: flex !important;
+}

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Logo.png" type="image/x-icon" alt="DataFortress">
+    <link rel="stylesheet" href="admin_manage.css">
+    <title>DataFortress</title>
+</head>
+<body>
+    <nav>
+        <a href="user_landingpage.html"><img src="Logo.png" alt="DataFortress Logo"></a>
+        <ul>
+            <li class="home"><a href="admin_dashboard.html">Dashboard</a></li>
+            <li class="logout"><a href="index.html">Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="user-header">
+            <div class="user-actions">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search...">
+                    <button class="search-icon-button">
+                        <span class="search-icon">🔍</span>
+                    </button>
+                </div>
+                <button class="action-button" id="add-button">Add</button>
+                <button class="action-button" id="delete-button">Delete</button>
+            </div>
+        </div>
+
+        <div class="add-window-overlay" id="add-admin-overlay">
+            <div class="add-window">
+                <h2>Add Admin</h2>
+                <form id="add-admin-form">
+                    <label for="user-id">User ID:</label> <!-- TODO: Must auto-increment-->
+                    <input type="text" id="user-id" name="user-id" required><br><br>
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required><br><br>
+                    <label for="password">Password:</label> <!-- TODO: Must be hashed after successful add-->
+                    <input type="password" id="password" name="password"><br><br>
+                    <button type="submit">ADD</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- TODO: Check if user already exists-->
+        <div class="popup-message-overlay" id="user-added-popup">
+            <div class="popup-message success">
+                User Successfully Added!
+            </div>
+        </div>
+
+        <div class="delete-window-overlay" id="delete-user-overlay">
+            <div class="delete-window">
+                <h2>Delete User</h2> <!-- TODO: Only Admin001 cannot be deleted-->
+                <div class="delete-user-table-container">
+                    <table class="delete-user-table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>User ID</th>
+                                <th>Username</th>
+                            </tr>
+                        </thead>
+                        <tbody id="delete-user-list">
+                            </tbody>
+                        </table>
+                    </div>
+                    <button class="delete-user" id="delete-init">DELETE</button>
+                </div>
+            </div>
+
+        <div class="confirm-delete-overlay" id="confirm-delete-overlay">
+            <div class="confirm-delete-box">
+                <h2>Confirm Delete</h2>
+                <p>Are you sure you want to delete the following users?</p>
+                <ul id="users-to-delete">
+                    </ul>
+                <div class="confirm-delete-actions">
+                    <button id="confirm-delete-final">CONFIRM</button>
+                    <button id="cancel-delete">CANCEL</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="popup-message-overlay" id="user-deleted-popup">
+            <div class="popup-message success">
+                User(s) Successfully Deleted!
+            </div>
+        </div>
+
+        <!-- TODO: Added/Deleted Users must automatically reflect after action is done -->
+        <div class="user-info-table-wrapper">
+            <table class="user-table" id="user-table">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody id="user-log-body">
+                    <tr>
+                        <td>ADMN-001</td>
+                        <td>Admin001</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>ADMN-002</td>
+                        <td>Admin002</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>CLNT-001</td>
+                        <td>Lorem</td>
+                        <td>sample.email@gmail.com</td>
+                    </tr>
+                    <tr>
+                        <td>CLNT-002</td>
+                        <td>Ipsum</td>
+                        <td>sample.email@gmail.com</td>
+                    </tr>
+                    <tr>
+                        <td>CLNT-003</td>
+                        <td>Dolor</td>
+                        <td>sample.email@gmail.com</td>
+                    </tr>
+                    <tr>
+                        <td>CLNT-004</td>
+                        <td>Lorem</td>
+                        <td>sample.email@gmail.com</td>
+                    </tr>
+                    <tr>
+                        <td>CLNT-005</td>
+                        <td>Lorem</td>
+                        <td>sample.email@gmail.com</td>
+                    </tr>
+                    <tr>
+                        <td>CLNT-006</td>
+                        <td>Ipsum</td>
+                        <td>sample.email@gmail.com</td>
+                    </tr>
+                    <tr>
+                        <td>CLNT-007</td>
+                        <td>Dolor</td>
+                        <td>sample.email@gmail.com</td>
+                    </tr>
+                    <tr>
+                        <td>CLNT-008</td>
+                        <td>Lorem</td>
+                        <td>sample.email@gmail.com</td>
+                    </tr>
+                    <tr>
+                        <td>CLNT-009</td>
+                        <td>Lorem</td>
+                        <td>sample.email@gmail.com</td>
+                    </tr>
+                    <tr>
+                        <td>CLNT-010</td>
+                        <td>Ipsum</td>
+                        <td>sample.email@gmail.com</td>
+                    </tr>
+                    <tr>
+                        <td>CLNT-011</td>
+                        <td>Dolor</td>
+                        <td>sample.email@gmail.com</td>
+                    </tr>
+                    <tr>
+                        <td>CLNT-012</td>
+                        <td>Lorem</td>
+                        <td>sample.email@gmail.com</td>
+                    </tr>
+                    <tr>
+                        <td>CLNT-013</td>
+                        <td>Lorem</td>
+                        <td>sample.email@gmail.com</td>
+                    </tr>
+                    <tr>
+                        <td>CLNT-014</td>
+                        <td>Ipsum</td>
+                        <td>sample.email@gmail.com</td>
+                    </tr>
+                    <tr>
+                        <td>CLNT-015</td>
+                        <td>Dolor</td>
+                        <td>sample.email@gmail.com</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 DataFortress. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const searchInput = document.querySelector('.search-input');
+        const searchIconButton = document.querySelector('.search-icon-button');
+        const addButton = document.getElementById('add-button');
+        const deleteButton = document.getElementById('delete-button');
+        const userLogBody = document.getElementById('user-log-body');
+        const addAdminOverlay = document.getElementById('add-admin-overlay');
+        const addAdminForm = document.getElementById('add-admin-form');
+        const userAddedPopup = document.getElementById('user-added-popup');
+        const deleteUserOverlay = document.getElementById('delete-user-overlay');
+        const deleteUserList = document.getElementById('delete-user-list');
+        const userTableBody = document.getElementById('user-log-body');
+        const DeleteInitButton = document.getElementById('delete-init');
+        const confirmDeleteOverlay = document.getElementById('confirm-delete-overlay');
+        const usersToDeleteList = document.getElementById('users-to-delete');
+        const confirmDeleteFinalButton = document.getElementById('confirm-delete-final');
+        const cancelDeleteButton = document.getElementById('cancel-delete');
+        const userDeletedPopup = document.getElementById('user-deleted-popup');
+
+        searchIconButton.addEventListener('click', () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            console.log(`Search icon clicked, searching for: ${searchTerm}`);
+        });
+
+        searchInput.addEventListener('input', (event) => {
+            const searchTerm = event.target.value.toLowerCase();
+            console.log(`Searching as you type: ${searchTerm}`);
+        });
+
+        addButton.addEventListener('click', () => {
+            addAdminOverlay.style.display = 'flex';
+        });
+
+        addAdminForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            addAdminOverlay.style.display = 'none'; 
+            userAddedPopup.style.display = 'flex';
+
+            setTimeout(() => {
+                userAddedPopup.style.display = 'none';
+            }, 3000);
+            addAdminForm.reset();
+        });
+
+        deleteButton.addEventListener('click', () => {
+            deleteUserList.innerHTML = '';
+            const users = Array.from(userTableBody.rows).map(row => ({
+                userId: row.cells[0].textContent,
+                username: row.cells[1].textContent
+            }));
+
+            users.forEach(user => {
+                const row = deleteUserList.insertRow();
+                const checkboxCell = row.insertCell();
+                const userIdCell = row.insertCell();
+                const usernameCell = row.insertCell();
+
+                checkboxCell.classList.add('delete-checkbox-cell');
+                checkboxCell.innerHTML = `<input type="checkbox" name="selectedUsers" value="${user.userId}">`;
+                userIdCell.textContent = user.userId;
+                usernameCell.textContent = user.username;
+            });
+
+            deleteUserOverlay.style.display = 'flex';
+        });
+
+        DeleteInitButton.addEventListener('click', () => {
+            const selectedUsers = Array.from(deleteUserList.querySelectorAll('input[name="selectedUsers"]:checked'))
+                .map(checkbox => {
+                    const row = checkbox.closest('tr');
+                    return {
+                        userId: row.cells[1].textContent,
+                        username: row.cells[2].textContent
+                    };
+                });
+
+            if (selectedUsers.length > 0) {
+                usersToDeleteList.innerHTML = '';
+                selectedUsers.forEach(user => {
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `<input type="checkbox" id="confirm-${user.userId}" value="${user.userId}" checked> <label for="confirm-${user.userId}">${user.userId} (${user.username})</label>`;
+                    usersToDeleteList.appendChild(listItem);
+                });
+                deleteUserOverlay.style.display = 'none';
+                confirmDeleteOverlay.style.display = 'flex';
+            } else {
+                alert('Please select at least one user to delete.');
+            }
+        });
+
+        confirmDeleteFinalButton.addEventListener('click', () => {
+            const usersToDelete = Array.from(usersToDeleteList.querySelectorAll('input[type="checkbox"]:checked'))
+                .map(checkbox => checkbox.value);
+
+            if (usersToDelete.length > 0) {
+                console.log('Users to delete:', usersToDelete);
+                // In a real application, you would send these user IDs to your server for deletion.
+                confirmDeleteOverlay.style.display = 'none';
+                userDeletedPopup.style.display = 'flex';
+                setTimeout(() => {
+                    userDeletedPopup.style.display = 'none';
+                }, 3000);
+            } else {
+                alert('No users selected for deletion in the final confirmation.');
+            }
+        });
+
+        cancelDeleteButton.addEventListener('click', () => {
+            confirmDeleteOverlay.style.display = 'none';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === addAdminOverlay) {
+                addAdminOverlay.style.display = 'none';
+            }
+            if (event.target === userAddedPopup) {
+                userAddedPopup.style.display = 'none';
+            }
+            if (event.target === deleteUserOverlay) {
+                deleteUserOverlay.style.display = 'none';
+            }
+            if (event.target === confirmDeleteOverlay) {
+                confirmDeleteOverlay.style.display = 'none';
+            }
+            if (event.target === userDeletedPopup) {
+                userDeletedPopup.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
