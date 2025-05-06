@@ -63,6 +63,71 @@
     </footer>
 
     <script>
+
+        // Add this function after the variable declarations in the script section
+
+async function decryptFile(file, passkey) {
+    try {
+        // Read the file
+        const fileBuffer = await file.arrayBuffer();
+        const fileArray = new Uint8Array(fileBuffer);
+
+        // Extract salt, iv, and encrypted content
+        const salt = fileArray.slice(0, 16);
+        const iv = fileArray.slice(16, 28);
+        const encryptedContent = fileArray.slice(28);
+
+        // Convert passkey to cryptographic key
+        const encoder = new TextEncoder();
+        const keyMaterial = await window.crypto.subtle.importKey(
+            "raw",
+            encoder.encode(passkey),
+            "PBKDF2",
+            false,
+            ["deriveBits", "deriveKey"]
+        );
+
+        // Derive key using the extracted salt
+        const key = await window.crypto.subtle.deriveKey(
+            {
+                name: "PBKDF2",
+                salt: salt,
+                iterations: 100000,
+                hash: "SHA-256"
+            },
+            keyMaterial,
+            { name: "AES-GCM", length: 256 },
+            false,
+            ["decrypt"]
+        );
+
+        // Decrypt the content
+        const decryptedContent = await window.crypto.subtle.decrypt(
+            {
+                name: "AES-GCM",
+                iv: iv
+            },
+            key,
+            encryptedContent
+        );
+
+        // Create a blob from the decrypted content
+        return new Blob([decryptedContent]);
+    } catch (error) {
+        console.error('Decryption error:', error);
+        throw error;
+    }
+}
+
+async function validatePasskey(file, passkey) {
+    try {
+        const testBytes = await testDecryption(file, passkey);
+        return true;
+    } catch {
+        return false;
+    }
+}
+
         const fileInput = document.getElementById('fileInput');
         const fileNameDisplay = document.querySelector('.file-name');
         const enterPasskeyButton = document.querySelector('.enter-passkey-button');
@@ -138,21 +203,29 @@
             clearInterval(timerInterval);
         });
 
-        initiateDownloadButton.addEventListener('click', function() {
-            const file = fileInput.files[0];
-            const passkey = passkeyInput.value;
+// Replace the initiateDownloadButton click event handler with this:
+initiateDownloadButton.addEventListener('click', async function() {
+    const file = fileInput.files[0];
+    const passkey = passkeyInput.value;
 
-            if (file && passkey) {
-                const downloadLink = document.createElement('a');
-                downloadLink.href = URL.createObjectURL(file);
-                downloadLink.download = file.name;
-                downloadLink.click();
-                downloadWindow.style.display = 'none';
-                clearInterval(timerInterval);
-            } else {
-                alert('Please choose a file and enter its passkey before downloading.');
-            }
-        });
+    if (file && passkey) {
+        try {
+            const decryptedBlob = await decryptFile(file, passkey);
+            const downloadLink = document.createElement('a');
+            downloadLink.href = URL.createObjectURL(decryptedBlob);
+            // Remove the .encrypted extension from the filename
+            downloadLink.download = file.name.replace('.encrypted', '');
+            downloadLink.click();
+            downloadWindow.style.display = 'none';
+            clearInterval(timerInterval);
+        } catch (error) {
+            alert('Decryption failed. Please check your passkey and try again.');
+            console.error(error);
+        }
+    } else {
+        alert('Please choose a file and enter its passkey before downloading.');
+    }
+});
     </script>
 </body>
 

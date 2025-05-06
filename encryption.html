@@ -66,6 +66,72 @@
     </footer>
 
     <script>
+        // Add this function after the variable declarations at the start of the script
+async function encryptFile(file, passkey) {
+    try {
+        // Convert passkey to cryptographic key
+        const encoder = new TextEncoder();
+        const keyMaterial = await window.crypto.subtle.importKey(
+            "raw",
+            encoder.encode(passkey),
+            "PBKDF2",
+            false,
+            ["deriveBits", "deriveKey"]
+        );
+
+        // Generate salt
+        const salt = window.crypto.getRandomValues(new Uint8Array(16));
+        
+        // Derive key
+        const key = await window.crypto.subtle.deriveKey(
+            {
+                name: "PBKDF2",
+                salt: salt,
+                iterations: 100000,
+                hash: "SHA-256"
+            },
+            keyMaterial,
+            { name: "AES-GCM", length: 256 },
+            false,
+            ["encrypt"]
+        );
+
+        // Generate IV
+        const iv = window.crypto.getRandomValues(new Uint8Array(12));
+
+        // Read file as ArrayBuffer
+        const fileBuffer = await file.arrayBuffer();
+
+        // Encrypt the file
+        const encryptedContent = await window.crypto.subtle.encrypt(
+            {
+                name: "AES-GCM",
+                iv: iv
+            },
+            key,
+            fileBuffer
+        );
+
+        // Combine salt, iv, and encrypted content
+        const combinedArray = new Uint8Array(salt.length + iv.length + encryptedContent.byteLength);
+        combinedArray.set(salt, 0);
+        combinedArray.set(iv, salt.length);
+        combinedArray.set(new Uint8Array(encryptedContent), salt.length + iv.length);
+
+        return new Blob([combinedArray], { type: 'application/octet-stream' });
+    } catch (error) {
+        console.error('Encryption error:', error);
+        throw error;
+    }
+}
+
+// Add this to the script section
+async function generateSecurePasskey() {
+    const array = new Uint8Array(12);
+    window.crypto.getRandomValues(array);
+    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+}
+        
         const fileInput = document.getElementById('fileInput');
         const fileNameDisplay = document.querySelector('.file-name');
         const createPasskeyButton = document.querySelector('.create-passkey-button');
@@ -85,11 +151,11 @@
             }
         });
 
-        // TODO: Ensure passkey will be unique and applied to file; can change passkey length if needed 
-        createPasskeyButton.addEventListener('click', function() {
-            const generatedPasskey = Math.random().toString(36).substring(2, 15);
-            passkeyInput.value = generatedPasskey;
-        });
+// Update the createPasskeyButton click handler
+    createPasskeyButton.addEventListener('click', async function() {
+    const generatedPasskey = await generateSecurePasskey();
+    passkeyInput.value = generatedPasskey;
+});
 
         copyIconContainer.addEventListener('click', function() {
             if (passkeyInput.value) {
@@ -118,54 +184,54 @@
                 alert("Download time expired!");
             }
         }
+// Update the encryptButton click handler
+encryptButton.addEventListener('click', async function() {
+    const file = fileInput.files[0];
+    const passkey = passkeyInput.value;
 
-        encryptButton.addEventListener('click', function() {
-            const file = fileInput.files[0];
-            const passkey = passkeyInput.value;
+    if (!file || !passkey) {
+        alert('Please choose a file and generate a passkey.');
+        return;
+    }
 
-            if (!file) {
-                alert('Please choose a file to encrypt.');
-                return;
-            }
+    if (file.size > 10 * 1024 * 1024) {
+        alert('File size exceeds the 10 MB limit.');
+        return;
+    }
 
-            if (file.size > 10 * 1024 * 1024) {
-                alert('File size exceeds the 10 MB limit. Please choose a smaller file.');
-                return;
-            }
-
-            if (!passkey) {
-                alert('Please click the create passkey button for your passkey.');
-                return;
-            }
-
-            downloadWindow.style.display = 'flex';
-
-            timeLeft = 300;
-            updateTimer();
-            timerInterval = setInterval(updateTimer, 1000);
-
-        });
+    downloadWindow.style.display = 'flex';
+    timeLeft = 300;
+    updateTimer();
+    timerInterval = setInterval(updateTimer, 1000);
+});
 
         closeDownloadWindow.addEventListener('click', () => {
             downloadWindow.style.display = 'none';
             clearInterval(timerInterval);
         });
 
-        initiateDownloadButton.addEventListener('click', function() {
-            const file = fileInput.files[0];
-            const passkey = passkeyInput.value;
+// Replace the initiateDownloadButton click event handler with this:
+initiateDownloadButton.addEventListener('click', async function() {
+    const file = fileInput.files[0];
+    const passkey = passkeyInput.value;
 
-            if (file && passkey) {
-                const downloadLink = document.createElement('a');
-                downloadLink.href = URL.createObjectURL(file);
-                downloadLink.download = file.name;
-                downloadLink.click();
-                downloadWindow.style.display = 'none';
-                clearInterval(timerInterval);
-            } else {
-                alert('Please choose a file and create a passkey before downloading.');
-            }
-        });
+    if (file && passkey) {
+        try {
+            const encryptedBlob = await encryptFile(file, passkey);
+            const downloadLink = document.createElement('a');
+            downloadLink.href = URL.createObjectURL(encryptedBlob);
+            downloadLink.download = file.name + '.encrypted';
+            downloadLink.click();
+            downloadWindow.style.display = 'none';
+            clearInterval(timerInterval);
+        } catch (error) {
+            alert('Encryption failed. Please try again.');
+            console.error(error);
+        }
+    } else {
+        alert('Please choose a file and create a passkey before downloading.');
+    }
+});
     </script>
 </body>
 
