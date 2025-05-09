@@ -39,8 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ChangePasswordRequest',
     'User',
-    'UserActivity',
-    'DownloadAccess',
+    'ForgotPasswordRequest',
+    'ChangePasswordRequest',
+    'AuditLogs',
     "rest_framework",
     "corsheaders",    
     "django_cognito_jwt",
@@ -94,8 +95,14 @@ WSGI_APPLICATION = 'datafortress_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'DataFortress-DB',
+        'USER': 'postgres',
+        'PASSWORD': 'Psychers09123',
+        'PORT': '5432',
+        'OPTIONS': {
+            'options': '-c search_path=data_fortress'
+        }
     }
 }
 
